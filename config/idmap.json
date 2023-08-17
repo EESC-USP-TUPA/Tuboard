@@ -10,5 +10,29 @@
         "id" : 340,
         "dlc" : 1,
         "conteudo" : ["PARTIDA_ACIONADA"]
+    },
+    {
+        "nome" : "DLG_ECU",
+        "id" : 24,
+        "dlc" : 1,
+        "conteudo" : ["VELOCIDADE_MSB", "VELOCIDADE_LSB"]
+    },
+    {
+        "nome" : "ECU_DLG_1",
+        "id" : 5,
+        "dlc" : 1,
+        "conteudo" : ["ACC_X_MSB", "ACC_X_LSB","ACC_Y_MSB", "ACC_Y_LSB","ACC_Z_MSB", "ACC_Z_LSB", "GYRO_X_MSB", "GYRO_X_LSB" ]
+    },
+    {
+        "nome" : "ECU_DLG_2",
+        "id" : 5,
+        "dlc" : 1,
+        "conteudo" : [ "GYRO_Y_MSB", "GYRO_Y_LSB" , "GYRO_Z_MSB", "GYRO_Z_LSB" ,"BSE2_MSB", "BSE2_LSB", "FLAG_ERRO_1", "FLAG_ERRO_2"]
+    },
+    {
+        "nome" : "ECU_FSC",
+        "id" : 288,
+        "dlc" : 1,
+        "conteudo" : ["FLAG_ERRO"]
     }
 ]
