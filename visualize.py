@@ -1,11 +1,15 @@
 import numpy as np
 import pyqtgraph as pg
 from pyqtgraph.Qt import QtCore
+from itertools import cycle
 
 
 import pyqtgraph.examples
 #pyqtgraph.examples.run()
 
+
+cores = ['r', 'g', 'b', 'y', 'c']
+cores = cycle(cores)
 
 app = pg.mkQApp("Tuboard")
 
@@ -19,28 +23,24 @@ def plotar_tabela(data):
 
     pg.exec()
 
-def plotar_grafico_unico(dado):
-    win = pg.GraphicsLayoutWidget(show=True, title="Basic plotting examples")
-    win.resize(1000,600)
-    win.setWindowTitle("Gráfico Único")
-
-    pg.setConfigOptions(antialias=True)
-
-    p1 = win.addPlot(title=dado.nome, y=dado.dados, x=dado.tempos)
-    pg.exec()
-
 def plotar_grafico_composto(dados):
-    win = pg.GraphicsLayoutWidget(show=True, title="Basic plotting examples")
+    win = pg.plot()
     win.resize(1000,600)
     win.setWindowTitle("Gráfico Composto")
+    win.addLegend()
 
     pg.setConfigOptions(antialias=True)
 
-    p1 = win.addPlot(title="hmmmm")
-    p1.multiDataPlot(y = [i.dados for i in dados], x = [i.tempos for i in dados])
 
+    for i in dados:
+        # definindo o eixo x em cada um dos dados, consguimos plotar gráficos com taxas de amostragem diferentes no mesmo gráfico
+        p1 = win.plot(y = i.dados, x = i.tempos, pen = next(cores), name= i.nome)
+
+    #p1.multiDataPlot(y = [i.dados for i in dados], x = [i.tempos for i in dados])
+
+    # p1 = win.addPlot(title="hmmmm")
+    # p1.multiDataPlot(y = [i.dados for i in dados], x = [i.tempos for i in dados])
+
+
+def mostrar():
     pg.exec()
-
-
-if __name__ == '__main__':
-    plotar_tabela()

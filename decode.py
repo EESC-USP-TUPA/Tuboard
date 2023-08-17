@@ -30,7 +30,7 @@ def decodificar_arquivo(file_path):
         mensagem["dlc"] = (bytedump[i + 5] << 8) | bytedump[i + 4]
 
         # Talvez isso aqui esteja invertido
-        mensagem["dados"] = list(reversed(bytedump[(i + 8) : (i + 16)]))
+        mensagem["dados"] = list((bytedump[(i + 8) : (i + 16)]))
         mensagens.append(mensagem)
         i = i + 16
 
