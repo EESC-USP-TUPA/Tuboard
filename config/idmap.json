@@ -2,8 +2,9 @@
     {
         "nome" : "FSC_ECU_1",
         "id" : 3,
-        "dlc" : 2,
-        "conteudo" : ["APPS1_MSB", "APPS1_LSB", "APPS2_MSB", "APPS2_LSB", "VOLANTE_MSB", "VOLANTE_LSB", "BSE1_MSB", "BSE1_LSB"]
+        "dlc" : 8,
+        "conteudo" : ["APPS1_LSB", "APPS1_MSB", "APPS2_LSB", "APPS2_MSB", "BSE1_LSB", "BSE1_MSB", "VOLANTE_LSB", "VOLANTE_MSB"]
+        
     },
     {
         "nome" : "FSC_ECU_2",
@@ -15,19 +16,19 @@
         "nome" : "DLG_ECU",
         "id" : 24,
         "dlc" : 1,
-        "conteudo" : ["VELOCIDADE_MSB", "VELOCIDADE_LSB"]
+        "conteudo" : ["CONTADOR_VEL"]
     },
     {
         "nome" : "ECU_DLG_1",
         "id" : 5,
-        "dlc" : 1,
+        "dlc" : 8,
         "conteudo" : ["ACC_X_MSB", "ACC_X_LSB","ACC_Y_MSB", "ACC_Y_LSB","ACC_Z_MSB", "ACC_Z_LSB", "GYRO_X_MSB", "GYRO_X_LSB" ]
     },
     {
         "nome" : "ECU_DLG_2",
         "id" : 5,
-        "dlc" : 1,
-        "conteudo" : [ "GYRO_Y_MSB", "GYRO_Y_LSB" , "GYRO_Z_MSB", "GYRO_Z_LSB" ,"BSE2_MSB", "BSE2_LSB", "FLAG_ERRO_1", "FLAG_ERRO_2"]
+        "dlc" : 6,
+        "conteudo" : [ "GYRO_Y_MSB", "GYRO_Y_LSB" , "GYRO_Z_MSB", "GYRO_Z_LSB" , "BSE2_MSB", "BSE2_LSB"]
     },
     {
         "nome" : "ECU_FSC",
@@ -36,3 +37,4 @@
         "conteudo" : ["FLAG_ERRO"]
     }
 ]
+
