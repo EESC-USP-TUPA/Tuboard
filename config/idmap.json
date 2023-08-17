@@ -1,7 +1,7 @@
 [
     {
         "nome" : "FSC_ECU_1",
-        "id" : 29800,
+        "id" : 3,
         "dlc" : 2,
         "conteudo" : ["APPS1_MSB", "APPS1_LSB", "APPS2_MSB", "APPS2_LSB", "VOLANTE_MSB", "VOLANTE_LSB", "BSE1_MSB", "BSE1_LSB"]
     },

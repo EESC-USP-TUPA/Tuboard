@@ -25,11 +25,11 @@ def decodificar_arquivo(file_path):
     while (i < len(bytedump) - 16):
         
         mensagem = {}
-        mensagem["tick"] = (bytedump[i + 4] << 24) | (bytedump[i + 5] << 16) |(bytedump[i + 6] << 8) | bytedump[i + 7]
-        mensagem["id"] = (bytedump[i] << 8) | bytedump[i + 1]
+        mensagem["tick"] = (bytedump[i + 3] << 24) | (bytedump[i + 2] << 16) |(bytedump[i + 1] << 8) | bytedump[i]
+        mensagem["id"] = (bytedump[i + 7] << 8) | bytedump[i + 6]
         mensagem["nome"] = [dicionario["nome"] for dicionario in dados if dicionario['id'] == mensagem["id"]]
-        mensagem["dlc"] = (bytedump[i + 2] << 8) | bytedump[i + 3]
-        mensagem["dados"] = bytedump[(i + 8) : (i + 16)]
+        mensagem["dlc"] = (bytedump[i + 5] << 8) | bytedump[i + 4]
+        mensagem["dados"] = list(reversed(bytedump[(i + 8) : (i + 16)]))
         mensagens.append(mensagem)
         i = i + 16
     return mensagens
