@@ -35,6 +35,25 @@
         "id" : 288,
         "dlc" : 1,
         "conteudo" : ["FLAG_ERRO"]
+    },
+    {
+        "nome" : "BMS_DLG_1",
+        "id" : 59,
+        "dlc" : 5,
+        "conteudo" : ["PACK_CURRENT", "NULL_1", "PACK_INST_VOL", "NULL_2", "CRC_CHECKSUM"]
+    },
+    {
+        "nome" : "BMS_DLG_2",
+        "id" : 971,
+        "dlc" : 7,
+        "conteudo" : ["PACK_DCL", "PACK_CCL", "NULL_3", "SIMULATED_SOC", "HIGH_TEMP", "LOW_TEMP", "CRC_CHECKSUM "]
+    },    
+    {
+        "nome" : "BMS_DLG_3",
+        "id" : 1714,
+        "dlc" : 8,
+        "conteudo" : ["RELAY_STATE", "PACK_SOCK", "PACK_RESISTANCE", "NULL_4", "PACK_AMPHOURS", "CRC_NAOSEI", "NAOSEITBM", "SEI_LA" ]
     }
+
 ]
 
