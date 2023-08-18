@@ -4,7 +4,7 @@ import decode
 import visualize
 
 # Substitua 'nome_do_arquivo' pelo caminho para o arquivo que você deseja ler
-arquivo = 'config/9.bin'
+arquivo = 'config/19.bin'
 dic = decode.decodificar_arquivo(arquivo)
 bytes = decode.file_to_byte_array(arquivo)
 
@@ -60,7 +60,7 @@ apps2_tensao.unidade = "Tensão (Volts)"
 #print(bytes)
 #print(array_de_bytes)  
 
-#visualize.plotar_tabela(dic)
+visualize.plotar_tabela(dic)
 visualize.plotar_grafico_composto([apps1_tensao, apps2_tensao])
 visualize.plotar_grafico_composto([apps1_bruto, apps2_bruto])
 
