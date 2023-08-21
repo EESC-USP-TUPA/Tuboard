@@ -2,7 +2,7 @@ import json
 
 global dados
 
-with open('config/idmap.json', 'r') as arquivo:
+with open('Tuboard/config/idmap.json', 'r') as arquivo:
     dados = json.load(arquivo)
 
 def file_to_byte_array(file_path):
@@ -12,6 +12,7 @@ def file_to_byte_array(file_path):
         while byte:
             byte_array.append(ord(byte))
             byte = file.read(1)
+
     return byte_array
 
 def decodificar_arquivo(file_path):
@@ -20,7 +21,7 @@ def decodificar_arquivo(file_path):
     i = 0
 
     mensagens = []
-
+    #print(bytedump)
     while (i < len(bytedump)):
         
         mensagem = {}
