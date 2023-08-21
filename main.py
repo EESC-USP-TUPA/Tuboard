@@ -4,7 +4,7 @@ import decode
 import visualize
 
 # Substitua 'nome_do_arquivo' pelo caminho para o arquivo que você deseja ler
-arquivo = 'config/19.bin'
+arquivo = 'config/17.bin'
 dic = decode.decodificar_arquivo(arquivo)
 bytes = decode.file_to_byte_array(arquivo)
 
