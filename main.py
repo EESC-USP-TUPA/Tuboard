@@ -27,7 +27,7 @@ def add_excel(lista, nome_coluna):
 
 
 # Substitua 'nome_do_arquivo' pelo caminho para o arquivo que você deseja ler
-arquivo = 'Tuboard/config/17.bin'
+arquivo = 'Tuboard/config/12.bin'
 dic = decode.decodificar_arquivo(arquivo)
 bytes = decode.file_to_byte_array(arquivo)
 
@@ -96,8 +96,11 @@ volante_bruto.tempos = [(i["tick"]) for i in dic if i["id"] == 3]
 #-------------------------------------------------------
 
 pack_current = dado("PACK_current", dic)
-pack_current.dados = [(i["dados"][0] << 8) | (i["dados"][1]) for i in dic if i["id"] == 59]
+pack_current.dados = [ (int( (str(hex(i["dados"][0])[2:]) + str(hex((i["dados"][1]))[2:])), 16)) / 10 for i in dic if i["id"] == 59]
 pack_current.tempos = [(i["tick"]) for i in dic if i["id"] == 59]
+
+
+
 
 
 #-------------------------------------------------------
@@ -181,6 +184,11 @@ tabela_id3 = pd.DataFrame({
     'bse1_bruto': bse1_bruto.dados,
     'volante_bruto': volante_bruto.dados
 })
+
+
+visualize.plotar_tabela(dic)
+visualize.plotar_grafico_composto([ pack_current ])
+visualize.mostrar()
 
 
 tabela_id3.to_excel(arquivo_excel, index=False)
