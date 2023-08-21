@@ -1,10 +1,33 @@
 import pandas as pd
-
+import openpyxl
 import decode
 import visualize
 
+global arquivo_excel
+
+def add_excel(lista, nome_coluna):
+    workbook = openpyxl.load_workbook(arquivo_excel)
+    sheet = workbook.active
+
+    nova_coluna_valores = lista
+
+    # Definir o cabeçalho da nova coluna
+    cabecalho_nova_coluna = nome_coluna
+    sheet.cell(row=1, column=sheet.max_column + 1, value=cabecalho_nova_coluna)
+
+    # Adicionar os valores da lista à nova coluna
+    for i, valor in enumerate(nova_coluna_valores, start=2):
+        sheet.cell(row=i, column=sheet.max_column, value=valor)
+
+    # Salvar as alterações no arquivo
+    workbook.save(arquivo_excel)
+
+    print("Coluna adicionada com sucesso!")
+
+
+
 # Substitua 'nome_do_arquivo' pelo caminho para o arquivo que você deseja ler
-arquivo = 'config/17.bin'
+arquivo = 'Tuboard/config/17.bin'
 dic = decode.decodificar_arquivo(arquivo)
 bytes = decode.file_to_byte_array(arquivo)
 
@@ -36,32 +59,140 @@ class dado:
     
 
 
+
+#-------------------------------------------------------
+#-------------------------------------------------------
+
 apps1_bruto = dado("apps1_bruto", dic)
 apps1_bruto.dados = [(i["dados"][1] << 8) | (i["dados"][0]) for i in dic if i["id"] == 3]
 apps1_bruto.tempos = [(i["tick"]) for i in dic if i["id"] == 3]
-apps1_bruto.unidade = "Valor Apps"
 
 apps1_tensao = dado("apps1_tensão", dic)
 apps1_tensao.dados = [float((i["dados"][1] << 8) | (i["dados"][0])) * (3.3/4095.0) for i in dic if i["id"] == 3]
 apps1_tensao.tempos = [(i["tick"]) for i in dic if i["id"] == 3]
-apps1_tensao.unidade = "Tensão (Volts)"
 
 apps2_bruto = dado("apps2_bruto", dic)
 apps2_bruto.dados = [(i["dados"][3] << 8) | (i["dados"][2]) for i in dic if i["id"] == 3]
 apps2_bruto.tempos = [(i["tick"]) for i in dic if i["id"] == 3]
-apps2_bruto.unidade = "Valor Apps"
 
 apps2_tensao = dado("apps2_tensão", dic)
 apps2_tensao.dados = [float((i["dados"][3] << 8) | (i["dados"][2])) * (3.3/4095.0) for i in dic if i["id"] == 3]
 apps2_tensao.tempos = [(i["tick"]) for i in dic if i["id"] == 3]
-apps2_tensao.unidade = "Tensão (Volts)"
+
+bse1_bruto = dado("bse1_bruto", dic)
+bse1_bruto.dados = [(i["dados"][5] << 8) | (i["dados"][4]) for i in dic if i["id"] == 3]
+bse1_bruto.tempos = [(i["tick"]) for i in dic if i["id"] == 3]
+
+bse1_tensao = dado("bse1_tensão", dic)
+bse1_tensao.dados = [float((i["dados"][5] << 8) | (i["dados"][4])) * (3.3/4095.0) for i in dic if i["id"] == 3]
+bse1_tensao.tempos = [(i["tick"]) for i in dic if i["id"] == 3]
+
+volante_bruto = dado("volante_bruto", dic)
+volante_bruto.dados = [(i["dados"][7] << 8) | (i["dados"][6])  for i in dic if i["id"] == 3]
+volante_bruto.tempos = [(i["tick"]) for i in dic if i["id"] == 3]
 
 
-#print(bytes)
-#print(array_de_bytes)  
+#-------------------------------------------------------
+#-------------------------------------------------------
 
-visualize.plotar_tabela(dic)
-visualize.plotar_grafico_composto([apps1_tensao, apps2_tensao])
-visualize.plotar_grafico_composto([apps1_bruto, apps2_bruto])
+pack_current = dado("PACK_current", dic)
+pack_current.dados = [(i["dados"][0] << 8) | (i["dados"][1]) for i in dic if i["id"] == 59]
+pack_current.tempos = [(i["tick"]) for i in dic if i["id"] == 59]
 
-visualize.mostrar()
+
+#-------------------------------------------------------
+#-------------------------------------------------------
+
+apps_erro = dado("APPS_erro", dic)
+bse_erro = dado("BSE_erro", dic)
+bppc_erro = dado("BPPC_erro", dic)
+
+for i in dic:
+    if i["id"] == 288:
+        apps_erro.tempos.append(i["tick"])
+        bse_erro.tempos.append(i["tick"])
+        bppc_erro.tempos.append(i["tick"])
+        if i["dados"][0] == 0:
+            apps_erro.dados.append(0)
+            bse_erro.dados.append(0)
+            bppc_erro.dados.append(0)
+        elif i["dados"][0] == 1:
+            apps_erro.dados.append(1)
+            bse_erro.dados.append(0)
+            bppc_erro.dados.append(0)
+        elif i["dados"][0] == 4:
+            apps_erro.dados.append(0)
+            bse_erro.dados.append(0)
+            bppc_erro.dados.append(1)
+        elif i["dados"][0] == 5:
+            apps_erro.dados.append(1)
+            bse_erro.dados.append(0)
+            bppc_erro.dados.append(1)
+
+
+
+# apps_erro.dados = [i["dados"][0] for i in dic if i["id"] == 288]
+# apps_erro.tempos = [(i["tick"]) for i in dic if i["id"] == 288]
+
+# bse_erro.dados = [i["dados"][0] for i in dic if i["id"] == 288]
+# bse_erro.tempos = [(i["tick"]) for i in dic if i["id"] == 288]
+
+# bppc_erro.dados = [i["dados"][0] for i in dic if i["id"] == 288]
+# bppc_erro.tempos = [(i["tick"]) for i in dic if i["id"] == 288]
+
+
+#-------------------------------------------------------
+#-------------------------------------------------------
+
+bse2_bruto = dado("bse2_bruto", dic)
+bse2_bruto.dados = [(i["dados"][4] << 8) | (i["dados"][5]) for i in dic if i["id"] == 5 and i["dlc"] == 6]
+bse2_bruto.tempos = [(i["tick"]) for i in dic if i["id"] == 5 and i["dlc"] == 6]
+
+
+#-------------------------------------------------------
+#-------------------------------------------------------
+
+
+pack_soc = dado("pack_soc", dic)
+pack_soc.dados = [ (i["dados"][1]) for i in dic if i["id"] == 1714]
+pack_soc.tempos = [(i["tick"]) for i in dic if i["id"] == 1714]
+
+
+#-------------------------------------------------------
+#-------------------------------------------------------
+
+
+
+
+arquivo_excel = 'Corrida_'
+
+for letra in arquivo:
+    if letra.isdigit():
+        arquivo_excel = arquivo_excel + letra
+
+arquivo_excel  = arquivo_excel + '.xlsx'
+
+
+
+tabela_id3 = pd.DataFrame({
+    'ticks_id3': apps1_tensao.tempos,
+    'apps1_bruto': apps1_bruto.dados,
+    'apps2_bruto': apps2_bruto.dados,
+    'bse1_bruto': bse1_bruto.dados,
+    'volante_bruto': volante_bruto.dados
+})
+
+
+tabela_id3.to_excel(arquivo_excel, index=False)
+add_excel(bse2_bruto.tempos, 'tick_id5')
+add_excel(bse2_bruto.dados, 'bse2_bruto')
+add_excel(pack_soc.tempos, 'tick_id1714')
+add_excel(pack_soc.dados, 'pack_soc')
+add_excel(apps_erro.tempos, 'tick_id288')
+add_excel(apps_erro.dados, 'apps_erro')
+add_excel(bse_erro.dados, 'bse_erro')
+add_excel(bppc_erro.dados, 'bppc_erro')
+
+
+
+
