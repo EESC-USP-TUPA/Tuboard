@@ -2,7 +2,7 @@ import json
 
 global dados
 
-with open('Tuboard/config/idmap.json', 'r') as arquivo:
+with open('config/idmap.json', 'r') as arquivo:
     dados = json.load(arquivo)
 
 def file_to_byte_array(file_path):

@@ -27,7 +27,7 @@ def add_excel(lista, nome_coluna):
 
 
 # Substitua 'nome_do_arquivo' pelo caminho para o arquivo que você deseja ler
-arquivo = 'Tuboard/config/12.bin'
+arquivo = 'config/21.bin'
 dic = decode.decodificar_arquivo(arquivo)
 bytes = decode.file_to_byte_array(arquivo)
 
@@ -96,13 +96,51 @@ volante_bruto.tempos = [(i["tick"]) for i in dic if i["id"] == 3]
 #-------------------------------------------------------
 
 pack_current = dado("PACK_current", dic)
-pack_current.dados = [ (int( (str(hex(i["dados"][0])[2:]) + str(hex((i["dados"][1]))[2:])), 16)) / 10 for i in dic if i["id"] == 59]
+pack_current.dados = [ ((i["dados"][0] << 8) | (i["dados"][1])) / 10 for i in dic if i["id"] == 59]
 pack_current.tempos = [(i["tick"]) for i in dic if i["id"] == 59]
 
+## Filtro passa baixa
+
+import numpy as np
+from scipy.signal import butter,filtfilt
+
+def butter_lowpass_filter(data, cutoff, fs, order):
+    nyq = 0.5 * fs  # Nyquist Frequency
+    normal_cutoff = cutoff / nyq
+    # Get the filter coefficients 
+    b, a = butter(order, normal_cutoff, btype='low', analog=False)
+    y = filtfilt(b, a, data)
+    return y
+
+pack_current.dados = butter_lowpass_filter(pack_current.dados, 2, 1000 / (pack_current.tempos[1] - pack_current.tempos[0]), 2)
+
+## Filtro média movel
+
+tam_grupo = 10 # deslocamento (uma semana útil)
+medias_moveis=[]
+
+
+for i in range(len(pack_current.dados)):
+    if pack_current.dados[i] > 100:
+        pack_current.dados[i] = 100
+
+
+i = 0
+# Calcular as médias móveis e armazená-las em uma lista:
+while i < len(pack_current.dados) - tam_grupo + 1:
+    grupo = pack_current.dados[i : i + tam_grupo]
+    media_grupo = sum(grupo) / tam_grupo
+    medias_moveis.append(media_grupo)
+    i +=1
+
+pack_current.dados = medias_moveis
 
 
 
+for i in range(tam_grupo - 1):
+    pack_current.dados.append(0)
 
+######################
 #-------------------------------------------------------
 #-------------------------------------------------------
 
@@ -186,20 +224,21 @@ tabela_id3 = pd.DataFrame({
 })
 
 
-visualize.plotar_tabela(dic)
+#visualize.plotar_tabela(dic)
+#visualize.plotar_grafico_composto([ apps1_tensao, apps2_tensao ])
 visualize.plotar_grafico_composto([ pack_current ])
 visualize.mostrar()
 
 
-tabela_id3.to_excel(arquivo_excel, index=False)
-add_excel(bse2_bruto.tempos, 'tick_id5')
-add_excel(bse2_bruto.dados, 'bse2_bruto')
-add_excel(pack_soc.tempos, 'tick_id1714')
-add_excel(pack_soc.dados, 'pack_soc')
-add_excel(apps_erro.tempos, 'tick_id288')
-add_excel(apps_erro.dados, 'apps_erro')
-add_excel(bse_erro.dados, 'bse_erro')
-add_excel(bppc_erro.dados, 'bppc_erro')
+# tabela_id3.to_excel(arquivo_excel, index=False)
+# add_excel(bse2_bruto.tempos, 'tick_id5')
+# add_excel(bse2_bruto.dados, 'bse2_bruto')
+# add_excel(pack_soc.tempos, 'tick_id1714')
+# add_excel(pack_soc.dados, 'pack_soc')
+# add_excel(apps_erro.tempos, 'tick_id288')
+# add_excel(apps_erro.dados, 'apps_erro')
+# add_excel(bse_erro.dados, 'bse_erro')
+# add_excel(bppc_erro.dados, 'bppc_erro')
 
 
 

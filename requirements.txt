@@ -3,3 +3,4 @@ numpy
 pandas
 pyqtgraph
 PyQt6
+scipy
